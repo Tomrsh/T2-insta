@@ -10,7 +10,7 @@ document.getElementById('download-btn').addEventListener('click', async function
     btn.innerHTML = 'Fetching...';
     
     try {
-        const response = await fetch('https://yourusername.pythonanywhere.com/download', {
+        const response = await fetch('https://t2insta.pythonanywhere.com/download', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ url: url })
