@@ -2,62 +2,310 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InstaSave | Mobile Downloader</title>
+    <title>InstaSave | Download Videos</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #E1306C; text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
-        button { background: #E1306C; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; }
-        #result { margin-top: 20px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+        
+        h1 {
+            color: #E1306C;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .tagline {
+            color: #555;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        #url {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        #url:focus {
+            border-color: #E1306C;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.2);
+        }
+        
+        #download-btn {
+            background: linear-gradient(to right, #405DE6, #E1306C);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(225, 48, 108, 0.3);
+        }
+        
+        #download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(225, 48, 108, 0.4);
+        }
+        
+        #download-btn:active {
+            transform: translateY(0);
+        }
+        
+        #download-btn.processing {
+            background: linear-gradient(to right, #6c757d, #495057);
+            cursor: not-allowed;
+        }
+        
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            display: none;
+        }
+        
+        .result-box.visible {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .download-link {
+            display: block;
+            background: #25D366;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .download-link:hover {
+            background: #128C7E;
+            transform: scale(1.02);
+        }
+        
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .instructions {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            color: #E1306C;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>InstaSave</h1>
-        <p>Download Instagram Reels, Photos, Videos on Mobile</p>
+        <div class="logo">IG</div>
+        <h1>InstaSave Pro</h1>
+        <p class="tagline">Download Instagram Reels, Photos, Videos & Stories</p>
         
-        <input type="text" id="url" placeholder="Paste Instagram URL here">
-        <button onclick="download()">Download Now</button>
+        <div class="input-group">
+            <input type="text" id="url" placeholder="Paste Instagram URL here..." autocomplete="off">
+            <button id="download-btn">Download Now</button>
+        </div>
         
-        <div id="result"></div>
+        <div class="result-box" id="result">
+            <!-- Results will appear here -->
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Open Instagram app and copy link of the post/reel</li>
+                <li>Paste the link in above input box</li>
+                <li>Click Download button</li>
+                <li>Tap on download button when it appears</li>
+            </ol>
+        </div>
+        
+        <div class="footer">
+            <p>Note: Only download public content for personal use</p>
+        </div>
     </div>
 
     <script>
-        async function download() {
-            const url = document.getElementById('url').value;
+        document.getElementById('download-btn').addEventListener('click', async function() {
+            const url = document.getElementById('url').value.trim();
             const resultDiv = document.getElementById('result');
+            const btn = document.getElementById('download-btn');
             
-            if (!url.includes('instagram.com')) {
-                resultDiv.innerHTML = '<p style="color:red">Please enter valid Instagram URL</p>';
+            // Reset result box
+            resultDiv.className = 'result-box';
+            resultDiv.innerHTML = '';
+            
+            // Validate URL
+            if (!url) {
+                showError(resultDiv, 'Please enter Instagram URL!');
                 return;
             }
-
-            resultDiv.innerHTML = '<p>Processing... ⏳</p>';
+            
+            if (!url.includes('instagram.com/')) {
+                showError(resultDiv, 'Invalid Instagram URL!');
+                return;
+            }
+            
+            // Show processing state
+            btn.textContent = 'Processing...';
+            btn.classList.add('processing');
+            btn.disabled = true;
             
             try {
-                // Replace with your Cyclic.sh API URL later
-                const response = await fetch('YOUR_API_URL', {
+                // Try SnapInsta API first
+                let downloadUrl = await getDownloadLink(url, 'https://snapinsta.app/api/ajaxSearch');
+                
+                // If first API fails, try backup API
+                if (!downloadUrl) {
+                    downloadUrl = await getDownloadLink(url, 'https://instadownloader.co/api/ajaxSearch');
+                }
+                
+                // If both fail, show error
+                if (!downloadUrl) {
+                    showError(resultDiv, 'Failed to download. Please try another URL.');
+                } else {
+                    // Show download button
+                    resultDiv.className = 'result-box visible';
+                    resultDiv.innerHTML = `
+                        <p style="color: #28a745; font-weight: bold; margin-bottom: 15px;">
+                            <span style="font-size: 24px;">✓</span> Download Ready!
+                        </p>
+                        <a href="${downloadUrl}" class="download-link" download>
+                            Click to Download
+                        </a>
+                        <p style="margin-top: 15px; font-size: 14px; color: #6c757d;">
+                            If download doesn't start, tap and hold the link and select "Save Link"
+                        </p>
+                    `;
+                }
+            } catch (error) {
+                showError(resultDiv, 'Server error. Please try again later.');
+            } finally {
+                // Reset button
+                btn.textContent = 'Download Now';
+                btn.classList.remove('processing');
+                btn.disabled = false;
+            }
+        });
+        
+        async function getDownloadLink(instagramUrl, apiUrl) {
+            try {
+                // Using proxy to avoid CORS issues
+                const proxyUrl = 'https://api.codetabs.com/v1/proxy/?quest=';
+                const fullUrl = proxyUrl + encodeURIComponent(apiUrl);
+                
+                const response = await fetch(fullUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: url })
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: `q=${encodeURIComponent(instagramUrl)}`
                 });
                 
                 const data = await response.json();
                 
-                if (data.success) {
-                    resultDiv.innerHTML = `
-                        <p style="color:green">Download Ready! ✅</p>
-                        <a href="${data.download_url}" target="_blank" style="display:block; background:#25D366; color:white; text-align:center; padding:10px; border-radius:5px; text-decoration:none;">
-                            Click to Download
-                        </a>
-                    `;
-                } else {
-                    resultDiv.innerHTML = `<p style="color:red">Error: ${data.error || 'Failed to download'}</p>`;
+                if (data.links && data.links.length > 0 && data.links[0].url) {
+                    return data.links[0].url;
                 }
             } catch (error) {
-                resultDiv.innerHTML = '<p style="color:red">Server Error. Try again later.</p>';
+                console.error('API error:', error);
             }
+            return null;
+        }
+        
+        function showError(container, message) {
+            container.className = 'result-box visible';
+            container.innerHTML = `<p class="error">❌ ${message}</p>`;
         }
     </script>
 </body>
