@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagram Reels Downloader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f7f7f7;
+      margin: 0;
+    }
+    .container {
+      margin-top: 50px;
+      padding: 20px;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #ff0055;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    video {
+      margin-top: 20px;
+      max-width: 90%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Instagram Reels Downloader</h1>
+    <input type="text" id="url" placeholder="Paste Instagram Reel URL">
+    <br>
+    <button onclick="downloadReel()">Download</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function downloadReel() {
+      let url = document.getElementById('url').value;
+      if (!url) {
+        alert('Please paste a valid Instagram URL');
+        return;
+      }
+      document.getElementById('result').innerHTML = 'Downloading...';
+      try {
+        let res = await fetch(`/api/download?url=${encodeURIComponent(url)}`);
+        let data = await res.json();
+        if (data.video) {
+          document.getElementById('result').innerHTML = `
+            <video controls src="${data.video}"></video><br>
+            <a href="${data.video}" download>
+              <button>Download Video</button>
+            </a>`;
+        } else {
+          document.getElementById('result').innerHTML = 'Error: Could not download video.';
+        }
+      } catch (e) {
+        document.getElementById('result').innerHTML = 'Server Error!';
+      }
+    }
+  </script>
+</body>
+</html>
