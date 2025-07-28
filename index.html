@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels Downloader</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #fafafa;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #E1306C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .video-container {
+            width: 100%;
+            background: black;
+            border-radius: 8px;
+            overflow: hidden;
+            display: none;
+        }
+        video {
+            width: 100%;
+            display: block;
+        }
+        .download-btn {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #405DE6;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="reelUrl" placeholder="Paste Instagram Reel URL here">
+        <button onclick="downloadReel()">Download</button>
+        
+        <div class="loading" id="loading">Processing...</div>
+        
+        <div class="video-container" id="videoContainer">
+            <video controls id="videoPlayer"></video>
+            <a href="#" class="download-btn" id="downloadBtn">Download Video</a>
+        </div>
+    </div>
+
+    <script>
+        async function downloadReel() {
+            const reelUrl = document.getElementById('reelUrl').value;
+            const loading = document.getElementById('loading');
+            const videoContainer = document.getElementById('videoContainer');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            // Reset
+            videoContainer.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            loading.style.display = 'block';
+            
+            // Validate URL
+            if(!reelUrl || !reelUrl.includes('instagram.com/reel/')) {
+                alert('Please enter a valid Instagram Reel URL');
+                loading.style.display = 'none';
+                return;
+            }
+            
+            try {
+                // Using a reliable backend service
+                const response = await fetch(`https://api.rivod.com/ig?url=${encodeURIComponent(reelUrl)}`);
+                const data = await response.json();
+                
+                if(data.videoUrl) {
+                    videoPlayer.src = data.videoUrl;
+                    downloadBtn.href = data.videoUrl;
+                    downloadBtn.download = 'instagram_reel_' + Date.now() + '.mp4';
+                    
+                    videoContainer.style.display = 'block';
+                    downloadBtn.style.display = 'block';
+                } else {
+                    alert('Could not download video. Please try another URL.');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+                console.error(error);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
