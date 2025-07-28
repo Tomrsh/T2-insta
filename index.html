@@ -60,46 +60,53 @@
     <div id="result"></div>
     
     <script>
-        async function downloadReel() {
-            const url = document.getElementById('reelUrl').value;
-            const resultDiv = document.getElementById('result');
-            
-            if (!url) {
-                resultDiv.innerHTML = '<p style="color: red;">Please enter a URL</p>';
-                return;
-            }
-            
-            try {
-                resultDiv.innerHTML = '<p>Processing...</p>';
-                
-                const response = await fetch('/download', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ url })
-                });
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    resultDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
-                } else {
-                    resultDiv.innerHTML = `
-                        <div class="video-container">
-                            <video controls width="100%">
-                                <source src="${data.videoUrl}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <br>
-                            <a href="${data.videoUrl}" class="download-btn" download>Download Video</a>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
-            }
+    async function downloadReel() {
+        const url = document.getElementById('reelUrl').value.trim();
+        const resultDiv = document.getElementById('result');
+        
+        // Improved URL validation
+        if (!url) {
+            resultDiv.innerHTML = '<p style="color: red;">Please enter a URL</p>';
+            return;
         }
+        
+        // Check for Instagram URL pattern
+        if (!url.match(/https?:\/\/(www\.)?instagram\.com\/(reel|p)\/[a-zA-Z0-9_-]+\/?/)) {
+            resultDiv.innerHTML = '<p style="color: red;">Please enter a valid Instagram Reel or Post URL</p>';
+            return;
+        }
+        
+        try {
+            resultDiv.innerHTML = '<p>Processing... <small>(This may take 10-20 seconds)</small></p>';
+            
+            const response = await fetch('/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url })
+            });
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                resultDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="video-container">
+                        <video controls width="100%">
+                            <source src="${data.videoUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <br>
+                        <a href="${data.videoUrl}" class="download-btn" download="instagram_reel.mp4">Download Video</a>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        }
+    }
     </script>
 </body>
 </html>
