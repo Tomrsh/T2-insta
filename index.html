@@ -3,124 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reels Downloader</title>
+    <title>Instagram Reels Downloader</title>
     <style>
         body {
-            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
             padding: 20px;
-            background: #fafafa;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #fafafa;
         }
-        .container {
-            width: 100%;
-            max-width: 500px;
+        .input-container {
+            margin-bottom: 20px;
         }
         input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 10px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            box-sizing: border-box;
         }
         button {
-            width: 100%;
-            padding: 12px;
-            background: #E1306C;
+            background-color: #E1306C;
             color: white;
             border: none;
+            padding: 12px 20px;
             border-radius: 8px;
-            font-size: 16px;
             cursor: pointer;
-            margin-bottom: 20px;
-        }
-        .video-container {
+            font-size: 16px;
             width: 100%;
-            background: black;
-            border-radius: 8px;
-            overflow: hidden;
+        }
+        button:hover {
+            background-color: #C13584;
+        }
+        .result-container {
+            margin-top: 30px;
             display: none;
         }
-        video {
+        .video-preview {
             width: 100%;
-            display: block;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
         .download-btn {
-            display: block;
-            text-align: center;
-            padding: 12px;
-            background: #405DE6;
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #405DE6;
             color: white;
             text-decoration: none;
             border-radius: 8px;
-            margin-top: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #E1306C;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
             display: none;
         }
-        .loading {
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error {
+            color: #ff3333;
+            margin-top: 15px;
             text-align: center;
-            padding: 20px;
-            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <input type="text" id="reelUrl" placeholder="Paste Instagram Reel URL here">
-        <button onclick="downloadReel()">Download</button>
-        
-        <div class="loading" id="loading">Processing...</div>
-        
-        <div class="video-container" id="videoContainer">
-            <video controls id="videoPlayer"></video>
-            <a href="#" class="download-btn" id="downloadBtn">Download Video</a>
-        </div>
+    <div class="input-container">
+        <input type="text" id="reelUrl" placeholder="Paste Instagram Reel URL here...">
+        <button onclick="processDownload()">Download</button>
+    </div>
+
+    <div class="loader" id="loader"></div>
+    <div class="error" id="error"></div>
+
+    <div class="result-container" id="resultContainer">
+        <video controls class="video-preview" id="videoPreview"></video>
+        <a href="#" class="download-btn" id="downloadBtn">Download Video</a>
     </div>
 
     <script>
-        async function downloadReel() {
+        async function processDownload() {
             const reelUrl = document.getElementById('reelUrl').value;
-            const loading = document.getElementById('loading');
-            const videoContainer = document.getElementById('videoContainer');
-            const videoPlayer = document.getElementById('videoPlayer');
+            const loader = document.getElementById('loader');
+            const errorDiv = document.getElementById('error');
+            const resultContainer = document.getElementById('resultContainer');
+            const videoPreview = document.getElementById('videoPreview');
             const downloadBtn = document.getElementById('downloadBtn');
             
-            // Reset
-            videoContainer.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            loading.style.display = 'block';
+            // Reset UI
+            loader.style.display = 'block';
+            errorDiv.textContent = '';
+            resultContainer.style.display = 'none';
             
             // Validate URL
             if(!reelUrl || !reelUrl.includes('instagram.com/reel/')) {
-                alert('Please enter a valid Instagram Reel URL');
-                loading.style.display = 'none';
+                errorDiv.textContent = 'Please enter a valid Instagram Reel URL';
+                loader.style.display = 'none';
                 return;
             }
             
             try {
-                // Using a reliable backend service
+                // Step 1: Submit to FastVideoSave.net
+                const formData = new FormData();
+                formData.append('url', reelUrl);
+                
+                const response = await fetch('https://fastvideosave.net/api/convert', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Origin': 'https://fastvideosave.net',
+                        'Referer': 'https://fastvideosave.net/'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if(data && data.downloadUrl) {
+                    // Display results
+                    videoPreview.src = data.downloadUrl;
+                    downloadBtn.href = data.downloadUrl;
+                    downloadBtn.download = 'instagram_reel_' + Date.now() + '.mp4';
+                    
+                    resultContainer.style.display = 'block';
+                } else {
+                    throw new Error('No download link found');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Error: ' + error.message;
+                console.error('Download failed:', error);
+                
+                // Fallback to alternative method
+                if(error.message.includes('Failed to fetch')) {
+                    errorDiv.textContent += '. Trying alternative method...';
+                    await tryAlternativeMethod(reelUrl);
+                }
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+        
+        async function tryAlternativeMethod(reelUrl) {
+            const errorDiv = document.getElementById('error');
+            
+            try {
+                // Alternative API if FastVideoSave fails
                 const response = await fetch(`https://api.rivod.com/ig?url=${encodeURIComponent(reelUrl)}`);
                 const data = await response.json();
                 
                 if(data.videoUrl) {
-                    videoPlayer.src = data.videoUrl;
-                    downloadBtn.href = data.videoUrl;
-                    downloadBtn.download = 'instagram_reel_' + Date.now() + '.mp4';
-                    
-                    videoContainer.style.display = 'block';
-                    downloadBtn.style.display = 'block';
+                    document.getElementById('videoPreview').src = data.videoUrl;
+                    document.getElementById('downloadBtn').href = data.videoUrl;
+                    document.getElementById('resultContainer').style.display = 'block';
                 } else {
-                    alert('Could not download video. Please try another URL.');
+                    throw new Error('Alternative method failed');
                 }
             } catch (error) {
-                alert('Error: ' + error.message);
-                console.error(error);
-            } finally {
-                loading.style.display = 'none';
+                errorDiv.textContent = 'All methods failed. Please try again later.';
+                console.error('Alternative method error:', error);
             }
         }
     </script>
