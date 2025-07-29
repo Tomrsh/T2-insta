@@ -3,839 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Download Instagram Reels, Stories, and Videos in HD quality for free. No registration required. Fast and secure Instagram video downloader.">
-    <meta name="keywords" content="instagram reels downloader, download instagram videos, instagram video saver, save instagram reels, instagram downloader">
-    <title>InstaReelSaver - Download Instagram Reels & Videos in HD</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Tinsta Saver - Instagram Reels Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #E1306C;
-            --secondary-color: #405DE6;
-            --dark-color: #262626;
-            --light-color: #f5f5f5;
-            --white-color: #ffffff;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
+        /* Basic Reset & Body Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
+            background: linear-gradient(135deg, #e0f2f7, #c1e0f0); /* Soft blue gradient */
+            display: flex;
+            flex-direction: column; /* For footer */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--dark-color);
-            background-color: var(--light-color);
-        }
-
+        /* Container for the main content */
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+            background-color: #ffffff;
+            padding: 45px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 550px;
+            width: 90%;
+            animation: fadeIn 0.8s ease-out;
+            margin-bottom: 20px; /* Space for footer */
         }
 
-        header {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--white-color);
-            padding: 20px 0;
-            box-shadow: var(--shadow);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
+        /* Heading */
+        h1 {
+            color: #2196F3; /* A vibrant blue */
+            margin-bottom: 25px;
+            font-size: 2.5em;
             font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        h1 span {
+            color: #4CAF50; /* Green for "Saver" */
+        }
+
+        /* Input Group */
+        .input-group {
+            margin-bottom: 30px;
             display: flex;
+            flex-direction: column;
             align-items: center;
         }
 
-        .logo i {
-            margin-right: 10px;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 20px;
-        }
-
-        nav ul li a {
-            color: var(--white-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            opacity: 0.8;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--white-color);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .hero {
-            padding: 80px 0;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: var(--dark-color);
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            color: #555;
-        }
-
-        .download-form {
-            background-color: var(--white-color);
-            padding: 30px;
+        input[type="text"] {
+            width: 100%;
+            max-width: 450px; /* Limit input width */
+            padding: 15px;
+            border: 2px solid #ddd;
             border-radius: 10px;
-            box-shadow: var(--shadow);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .input-group {
-            display: flex;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .input-group input {
-            flex: 1;
-            padding: 12px 15px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-        }
-
-        .input-group button {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--white-color);
-            border: none;
-            padding: 0 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .input-group button:hover {
-            opacity: 0.9;
-        }
-
-        .result {
-            margin-top: 30px;
-            display: none;
-        }
-
-        .video-preview {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .video-preview video {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-        }
-
-        .download-btn {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--white-color);
-            padding: 12px 25px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 10px 5px;
-            transition: all 0.3s ease;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .features {
-            padding: 60px 0;
-            background-color: var(--white-color);
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section-title h2 {
-            font-size: 2rem;
-            color: var(--dark-color);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background-color: var(--light-color);
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .feature-card i {
-            font-size: 40px;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .feature-card h3 {
+            font-size: 1.1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box; /* Include padding in width */
             margin-bottom: 15px;
-            font-size: 1.3rem;
         }
 
-        .how-to-use {
-            padding: 60px 0;
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.2);
         }
 
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .step {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
-
-        .step-number {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--white-color);
-            border-radius: 50%;
-            display: flex;
+        /* Buttons */
+        button {
+            background-color: #4CAF50; /* Fresh green */
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0 auto 20px;
+            gap: 8px;
         }
 
-        .step h3 {
-            margin-bottom: 15px;
+        button:hover {
+            background-color: #43A047;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
         }
 
-        .faq {
-            padding: 60px 0;
-            background-color: var(--white-color);
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
         }
 
-        .faq-item {
-            margin-bottom: 20px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 15px 20px;
-            background-color: var(--light-color);
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .faq-answer {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .faq-answer.active {
-            padding: 20px;
-            max-height: 500px;
-        }
-
-        .ad-container {
-            margin: 30px 0;
-            text-align: center;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-        }
-
-        footer {
-            background-color: var(--dark-color);
-            color: var(--white-color);
-            padding: 40px 0 20px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-column h3 {
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-column ul li a {
-            color: #ccc;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-column ul li a:hover {
-            color: var(--white-color);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-links a {
-            color: var(--white-color);
-            font-size: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #444;
-            font-size: 14px;
-            color: #aaa;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            margin: 0 auto;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: var(--primary-color);
+        button .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #fff;
             border-radius: 50%;
+            width: 20px;
+            height: 20px;
             animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+
+        button.loading .spinner {
+            display: block; /* Show when loading */
+        }
+
+        button.loading {
+            background-color: #64B5F6; /* Lighter blue when loading */
+            cursor: not-allowed;
         }
 
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
+        /* Messages & Download Link */
+        #message {
+            margin-top: 25px;
+            font-size: 1.1em;
+            min-height: 25px; /* To prevent layout shift */
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
 
-            nav ul {
-                margin-top: 20px;
-                flex-direction: column;
-                align-items: center;
-            }
+        #downloadLink {
+            display: none; /* Hidden by default */
+            margin-top: 30px;
+            background-color: #2196F3; /* Primary blue for download */
+            color: white;
+            padding: 14px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 15px rgba(33, 150, 243, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-            nav ul li {
-                margin: 10px 0;
-            }
+        #downloadLink:hover {
+            background-color: #1976D2;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+        }
 
-            .mobile-menu-btn {
-                display: block;
-                position: absolute;
-                top: 20px;
-                right: 20px;
-            }
+        /* Footer */
+        .footer {
+            margin-top: auto; /* Pushes footer to the bottom */
+            padding: 15px;
+            font-size: 0.9em;
+            color: #666;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
 
-            .hero h1 {
-                font-size: 2rem;
-            }
+        .footer a {
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: 600;
+        }
 
-            .hero p {
-                font-size: 1rem;
-            }
+        .footer a:hover {
+            text-decoration: underline;
+        }
 
-            .download-form {
-                padding: 20px;
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
             }
-
-            .input-group {
-                flex-direction: column;
+            h1 {
+                font-size: 2em;
             }
-
-            .input-group input {
-                width: 100%;
-            }
-
-            .input-group button {
-                width: 100%;
-                padding: 12px;
+            input[type="text"], button, #downloadLink {
+                font-size: 1em;
+                padding: 12px 20px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fab fa-instagram"></i>
-                <span>InstaReelSaver</span>
-            </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
+    <div class="container">
+        <h1>Tinsta<span>Saver</span></h1>
+        <p>Download Instagram Reels and Videos Instantly!</p>
+        <div class="input-group">
+            <input type="text" id="reelUrl" placeholder="Paste Instagram Reel or Video URL here">
+            <button id="generateBtn" onclick="downloadReel()">
+                <span class="button-text">Generate Download Link</span>
+                <span class="spinner"></span>
             </button>
-            <nav id="mainNav">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#how-to-use">How to Use</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                </ul>
-            </nav>
         </div>
-    </header>
+        
+        <p id="message"></p>
+        <a id="downloadLink" href="#" target="_blank">Download Video</a>
+    </div>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Download Instagram Reels & Videos in HD</h1>
-                <p>Save your favorite Instagram Reels, Stories, and Videos to your device with just one click. Fast, free, and easy to use!</p>
-                
-                <div class="download-form">
-                    <div class="form-group">
-                        <label for="videoUrl">Paste Instagram Reel/Video URL</label>
-                        <div class="input-group">
-                            <input type="url" id="videoUrl" placeholder="https://www.instagram.com/reel/..." required>
-                            <button id="downloadBtn"><i class="fas fa-download"></i> Download</button>
-                        </div>
-                    </div>
-                    
-                    <div class="loading" id="loading">
-                        <div class="spinner"></div>
-                        <p>Fetching video information...</p>
-                    </div>
-                    
-                    <div class="result" id="result">
-                        <div class="video-preview" id="videoPreview"></div>
-                        <div class="download-options" id="downloadOptions"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Adsterra Ad -->
-        <div class="container ad-container">
-            <div id="adsterra-ad-1"></div>
-        </div>
-
-        <section class="features" id="features">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Why Choose Our Instagram Downloader</h2>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <i class="fas fa-bolt"></i>
-                        <h3>Fast Download</h3>
-                        <p>Download Instagram videos in seconds without any waiting time or delays.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-lock"></i>
-                        <h3>100% Safe</h3>
-                        <p>Our service is completely safe to use with no malware or viruses.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-user-shield"></i>
-                        <h3>No Registration</h3>
-                        <p>Download videos without any registration or login required.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h3>All Devices</h3>
-                        <p>Works perfectly on all devices including mobile, tablet and desktop.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-highlighter"></i>
-                        <h3>High Quality</h3>
-                        <p>Download videos in the highest available quality up to 1080p HD.</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-infinity"></i>
-                        <h3>Unlimited Downloads</h3>
-                        <p>No limits on how many videos you can download. It's completely free!</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Adsterra Ad -->
-        <div class="container ad-container">
-            <div id="adsterra-ad-2"></div>
-        </div>
-
-        <section class="how-to-use" id="how-to-use">
-            <div class="container">
-                <div class="section-title">
-                    <h2>How to Download Instagram Reels</h2>
-                    <p>Follow these simple steps to download any Instagram video or reel</p>
-                </div>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <h3>Copy Link</h3>
-                        <p>Open Instagram app and copy the link of the reel or video you want to download.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <h3>Paste URL</h3>
-                        <p>Paste the Instagram URL in the input field above and click the download button.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <h3>Download</h3>
-                        <p>Choose your preferred video quality and click download to save it to your device.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="faq" id="faq">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Frequently Asked Questions</h2>
-                </div>
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Is this Instagram downloader free to use?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Yes, our Instagram video downloader is completely free to use. You can download as many videos as you want without any charges.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Do I need to install any software?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>No, our service works directly in your web browser. There's no need to download or install any additional software.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>What video quality can I download?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>You can download videos in the highest available quality, up to 1080p HD resolution depending on the original video quality.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Can I download private Instagram videos?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>No, our tool can only download videos from public Instagram accounts. Private account videos cannot be accessed.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Is this service legal to use?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Our service is legal to use for personal purposes. However, please respect copyright laws and don't redistribute downloaded content without permission.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Adsterra Ad -->
-        <div class="container ad-container">
-            <div id="adsterra-ad-3"></div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>InstaReelSaver</h3>
-                    <p>The fastest and easiest way to download Instagram Reels, Stories, and Videos in high quality.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#how-to-use">How to Use</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">DMCA</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; <span id="year"></span> InstaReelSaver. All rights reserved.</p>
-            </div>
-        </div>
+    <footer class="footer">
+        <p>&copy; 2024 TinstaSaver. All rights reserved. Made with ❤️ for easy downloads.</p>
+        <p>Powered by <a href="https://tinstasaver.pythonanywhere.com/" target="_blank">TinstaSaver API</a></p>
     </footer>
 
     <script>
-        // Mobile menu toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            const nav = document.getElementById('mainNav');
-            nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
-        });
+        // Your API's base URL on PythonAnywhere
+        const API_BASE_URL = "https://tinstasaver.pythonanywhere.com";
 
-        // FAQ accordion
-        const faqQuestions = document.querySelectorAll('.faq-question');
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                answer.classList.toggle('active');
-                const icon = question.querySelector('i');
-                icon.classList.toggle('fa-chevron-down');
-                icon.classList.toggle('fa-chevron-up');
-            });
-        });
+        const urlInput = document.getElementById('reelUrl');
+        const downloadButton = document.getElementById('downloadLink');
+        const messageDiv = document.getElementById('message');
+        const generateBtn = document.getElementById('generateBtn');
 
-        // Set current year in footer
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Instagram download functionality
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-            const videoUrl = document.getElementById('videoUrl').value.trim();
-            
-            if (!videoUrl) {
-                alert('Please enter a valid Instagram URL');
-                return;
-            }
-            
-            if (!isValidInstagramUrl(videoUrl)) {
-                alert('Please enter a valid Instagram Reel/Video URL');
-                return;
-            }
-            
-            fetchVideoInfo(videoUrl);
-        });
-
-        function isValidInstagramUrl(url) {
-            const instagramRegex = /^https?:\/\/(www\.)?instagram\.com\/(p|reel|tv)\/[a-zA-Z0-9_-]+\/?/;
-            return instagramRegex.test(url);
+        // Function to reset UI state
+        function resetUI() {
+            messageDiv.textContent = '';
+            messageDiv.style.color = '#666'; // Default color
+            downloadButton.style.display = 'none';
+            downloadButton.href = '#';
+            generateBtn.classList.remove('loading');
+            generateBtn.disabled = false;
+            generateBtn.querySelector('.button-text').textContent = 'Generate Download Link';
         }
 
-        function fetchVideoInfo(url) {
-            const loading = document.getElementById('loading');
-            const result = document.getElementById('result');
-            
-            loading.style.display = 'block';
-            result.style.display = 'none';
-            
-            // Using the provided API
-            const apiUrl = `https://tinstasaver.pythonanywhere.com/?url=${encodeURIComponent(url)}`;
-            
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    loading.style.display = 'none';
-                    
-                    if (data.error) {
-                        alert(data.error);
-                        return;
-                    }
-                    
-                    displayVideoResult(data);
-                })
-                .catch(error => {
-                    loading.style.display = 'none';
-                    console.error('Error:', error);
-                    alert('Failed to fetch video information. Please try again later.');
-                });
-        }
-
-        function displayVideoResult(data) {
-            const videoPreview = document.getElementById('videoPreview');
-            const downloadOptions = document.getElementById('downloadOptions');
-            const result = document.getElementById('result');
-            
-            // Clear previous results
-            videoPreview.innerHTML = '';
-            downloadOptions.innerHTML = '';
-            
-            // Display video preview
-            if (data.video_url) {
-                videoPreview.innerHTML = `
-                    <video controls>
-                        <source src="${data.video_url}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                `;
+        // Function to set loading state
+        function setLoading(isLoading) {
+            if (isLoading) {
+                generateBtn.classList.add('loading');
+                generateBtn.disabled = true;
+                generateBtn.querySelector('.button-text').textContent = 'Processing...';
+                messageDiv.textContent = 'Generating download link... This might take a few moments.';
+                messageDiv.style.color = '#007bff'; // Blue for info/loading
+                downloadButton.style.display = 'none';
             } else {
-                videoPreview.innerHTML = '<p>Video preview not available</p>';
+                resetUI();
             }
-            
-            // Display download options
-            if (data.video_url) {
-                downloadOptions.innerHTML = `
-                    <a href="${data.video_url}" class="download-btn" download="instagram_reel_${Date.now()}.mp4">
-                        <i class="fas fa-download"></i> Download HD Video
-                    </a>
-                `;
-            }
-            
-            result.style.display = 'block';
-            
-            // Scroll to result
-            result.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Initialize Adsterra ads
-        function initAds() {
-            // Adsterra ad code for ad-1
-            const ad1 = document.getElementById('adsterra-ad-1');
-            ad1.innerHTML = `
-                <!-- Adsterra Ad Code -->
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : 'YOUR_ADSTERRA_AD_CODE_1',
-                        'format' : 'iframe',
-                        'height' : 250,
-                        'width' : 300,
-                        'params' : {}
-                    };
-                    document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.profitabledisplaynetwork.com/YOUR_ADSTERRA_AD_CODE_1/invoke.js"></scr' + 'ipt>');
-                </script>
-            `;
-            
-            // Adsterra ad code for ad-2
-            const ad2 = document.getElementById('adsterra-ad-2');
-            ad2.innerHTML = `
-                <!-- Adsterra Ad Code -->
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : 'YOUR_ADSTERRA_AD_CODE_2',
-                        'format' : 'iframe',
-                        'height' : 60,
-                        'width' : 468,
-                        'params' : {}
-                    };
-                    document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.profitabledisplaynetwork.com/YOUR_ADSTERRA_AD_CODE_2/invoke.js"></scr' + 'ipt>');
-                </script>
-            `;
-            
-            // Adsterra ad code for ad-3
-            const ad3 = document.getElementById('adsterra-ad-3');
-            ad3.innerHTML = `
-                <!-- Adsterra Ad Code -->
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : 'YOUR_ADSTERRA_AD_CODE_3',
-                        'format' : 'iframe',
-                        'height' : 90,
-                        'width' : 728,
-                        'params' : {}
-                    };
-                    document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.profitabledisplaynetwork.com/YOUR_ADSTERRA_AD_CODE_3/invoke.js"></scr' + 'ipt>');
-                </script>
-            `;
-        }
+        async function downloadReel() {
+            const reelUrl = urlInput.value.trim();
 
-        // Initialize ads when page loads
-        window.addEventListener('load', initAds);
+            resetUI(); // Clear previous messages/links
+            setLoading(true); // Set loading state
+
+            if (!reelUrl) {
+                messageDiv.textContent = 'Please enter an Instagram Reel or Video URL.';
+                messageDiv.style.color = '#dc3545'; // Red for error
+                setLoading(false); // Reset loading state
+                return;
+            }
+
+            // Basic validation to ensure it's an Instagram URL
+            if (!reelUrl.includes('instagram.com/')) {
+                messageDiv.textContent = 'Invalid URL. Please enter a valid Instagram URL.';
+                messageDiv.style.color = '#dc3545'; // Red for error
+                setLoading(false); // Reset loading state
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/download-reel`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: reelUrl })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.status === 'success') {
+                    messageDiv.textContent = 'Download link ready!';
+                    messageDiv.style.color = '#28a745'; // Green for success
+                    
+                    const finalDownloadUrl = `${API_BASE_URL}${data.download_url}`;
+                    downloadButton.href = finalDownloadUrl;
+                    downloadButton.download = data.filename || 'instagram_video.mp4'; // Suggest a filename
+                    downloadButton.style.display = 'inline-flex'; // Show the download button
+                    urlInput.value = ''; // Clear input field after success
+
+                } else {
+                    const errorMessage = data.error || 'Could not process your request. Please try again.';
+                    messageDiv.textContent = `Error: ${errorMessage}`;
+                    messageDiv.style.color = '#dc3545'; // Red for error
+                    console.error('API Error:', data);
+                }
+            } catch (error) {
+                console.error('Network or API connection error:', error);
+                messageDiv.textContent = 'Could not connect to the downloader. Please check your internet connection or try again later.';
+                messageDiv.style.color = '#dc3545'; // Red for error
+            } finally {
+                setLoading(false); // Always reset loading state
+            }
+        }
     </script>
 </body>
 </html>
