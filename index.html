@@ -636,4 +636,206 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>InstaReelSaver</h3>
-                    <p>The fastest and easiest way to download Instagram Reels, Stories, and Videos in high quality.</
+                    <p>The fastest and easiest way to download Instagram Reels, Stories, and Videos in high quality.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-to-use">How to Use</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">DMCA</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="year"></span> InstaReelSaver. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const nav = document.getElementById('mainNav');
+            nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // FAQ accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                answer.classList.toggle('active');
+                const icon = question.querySelector('i');
+                icon.classList.toggle('fa-chevron-down');
+                icon.classList.toggle('fa-chevron-up');
+            });
+        });
+
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Instagram download functionality
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const videoUrl = document.getElementById('videoUrl').value.trim();
+            
+            if (!videoUrl) {
+                alert('Please enter a valid Instagram URL');
+                return;
+            }
+            
+            if (!isValidInstagramUrl(videoUrl)) {
+                alert('Please enter a valid Instagram Reel/Video URL');
+                return;
+            }
+            
+            fetchVideoInfo(videoUrl);
+        });
+
+        function isValidInstagramUrl(url) {
+            const instagramRegex = /^https?:\/\/(www\.)?instagram\.com\/(p|reel|tv)\/[a-zA-Z0-9_-]+\/?/;
+            return instagramRegex.test(url);
+        }
+
+        function fetchVideoInfo(url) {
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            
+            // Using the provided API
+            const apiUrl = `https://tinstasaver.pythonanywhere.com/?url=${encodeURIComponent(url)}`;
+            
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loading.style.display = 'none';
+                    
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    
+                    displayVideoResult(data);
+                })
+                .catch(error => {
+                    loading.style.display = 'none';
+                    console.error('Error:', error);
+                    alert('Failed to fetch video information. Please try again later.');
+                });
+        }
+
+        function displayVideoResult(data) {
+            const videoPreview = document.getElementById('videoPreview');
+            const downloadOptions = document.getElementById('downloadOptions');
+            const result = document.getElementById('result');
+            
+            // Clear previous results
+            videoPreview.innerHTML = '';
+            downloadOptions.innerHTML = '';
+            
+            // Display video preview
+            if (data.video_url) {
+                videoPreview.innerHTML = `
+                    <video controls>
+                        <source src="${data.video_url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            } else {
+                videoPreview.innerHTML = '<p>Video preview not available</p>';
+            }
+            
+            // Display download options
+            if (data.video_url) {
+                downloadOptions.innerHTML = `
+                    <a href="${data.video_url}" class="download-btn" download="instagram_reel_${Date.now()}.mp4">
+                        <i class="fas fa-download"></i> Download HD Video
+                    </a>
+                `;
+            }
+            
+            result.style.display = 'block';
+            
+            // Scroll to result
+            result.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize Adsterra ads
+        function initAds() {
+            // Adsterra ad code for ad-1
+            const ad1 = document.getElementById('adsterra-ad-1');
+            ad1.innerHTML = `
+                <!-- Adsterra Ad Code -->
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : 'YOUR_ADSTERRA_AD_CODE_1',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                    document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.profitabledisplaynetwork.com/YOUR_ADSTERRA_AD_CODE_1/invoke.js"></scr' + 'ipt>');
+                </script>
+            `;
+            
+            // Adsterra ad code for ad-2
+            const ad2 = document.getElementById('adsterra-ad-2');
+            ad2.innerHTML = `
+                <!-- Adsterra Ad Code -->
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : 'YOUR_ADSTERRA_AD_CODE_2',
+                        'format' : 'iframe',
+                        'height' : 60,
+                        'width' : 468,
+                        'params' : {}
+                    };
+                    document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.profitabledisplaynetwork.com/YOUR_ADSTERRA_AD_CODE_2/invoke.js"></scr' + 'ipt>');
+                </script>
+            `;
+            
+            // Adsterra ad code for ad-3
+            const ad3 = document.getElementById('adsterra-ad-3');
+            ad3.innerHTML = `
+                <!-- Adsterra Ad Code -->
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : 'YOUR_ADSTERRA_AD_CODE_3',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                    document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.profitabledisplaynetwork.com/YOUR_ADSTERRA_AD_CODE_3/invoke.js"></scr' + 'ipt>');
+                </script>
+            `;
+        }
+
+        // Initialize ads when page loads
+        window.addEventListener('load', initAds);
+    </script>
+</body>
+</html>
